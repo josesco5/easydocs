@@ -2,6 +2,7 @@ package com.avilapps.easydocs.presentation.delegate.impl;
 
 import com.avilapps.easydocs.domain.model.Document;
 import com.avilapps.easydocs.domain.services.DocumentService;
+import com.avilapps.easydocs.presentation.mapper.DocumentCreateApiMapper;
 import com.avilapps.easydocs.presentation.model.CreateDocumentRequest;
 import com.avilapps.easydocs.presentation.model.CreateDocumentResponse;
 import org.slf4j.Logger;
@@ -15,17 +16,17 @@ public class DocumentCreateDelegate {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentCreateDelegate.class);
 
     private final DocumentService documentService;
+    private final DocumentCreateApiMapper documentCreateApiMapper;
 
-    public DocumentCreateDelegate(DocumentService documentService) {
+    public DocumentCreateDelegate(DocumentService documentService, DocumentCreateApiMapper documentCreateApiMapper) {
         this.documentService = documentService;
+        this.documentCreateApiMapper = documentCreateApiMapper;
     }
 
     public ResponseEntity<CreateDocumentResponse> createDocument(CreateDocumentRequest documentRequest) {
         CreateDocumentResponse documentResponse = new CreateDocumentResponse();
         try {
-            Document document = new Document();
-            document.setSubject(documentRequest.getSubject());
-            document.setFolio(documentRequest.getFolio());
+            Document document = documentCreateApiMapper.mapApiRequest(documentRequest);
             String url = documentService.createDocument(document, documentRequest.getFile());
             documentResponse.setUrl(url);
         } catch (Exception exception) {
