@@ -6,13 +6,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URL;
 
-public interface DocumentRepository {
+public interface AttachmentRepository {
 
-    default Document createDocument(Document document) {
-        throw new NonImplementedException();
-    }
-
-    default Document updateDocument(Document document) {
+    default URL uploadAttachment(Document document, MultipartFile file) {
         throw new NonImplementedException();
     }
 }

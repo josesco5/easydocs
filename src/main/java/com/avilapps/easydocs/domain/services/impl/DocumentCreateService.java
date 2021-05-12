@@ -1,5 +1,6 @@
 package com.avilapps.easydocs.domain.services.impl;
 
+import com.avilapps.easydocs.domain.repository.AttachmentRepository;
 import com.avilapps.easydocs.domain.repository.DocumentRepository;
 import com.avilapps.easydocs.domain.model.Document;
 import com.avilapps.easydocs.domain.services.DocumentService;
@@ -15,16 +16,18 @@ public class DocumentCreateService implements DocumentService {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentCreateService.class);
 
     private final DocumentRepository documentRepository;
+    private final AttachmentRepository attachmentRepository;
 
-    public DocumentCreateService(DocumentRepository documentRepository) {
+    public DocumentCreateService(DocumentRepository documentRepository, AttachmentRepository attachmentRepository) {
         this.documentRepository = documentRepository;
+        this.attachmentRepository = attachmentRepository;
     }
 
     @Override
     public String createDocument(Document document, MultipartFile file) {
         try {
             Document createdDocument = documentRepository.createDocument(document);
-            URL url = documentRepository.uploadAttachment(createdDocument, file);
+            URL url = attachmentRepository.uploadAttachment(createdDocument, file);
             String path = url.getPath();
             document.setPath(path);
             documentRepository.updateDocument(document);
