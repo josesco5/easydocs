@@ -6,3 +6,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/easydocs
     username: postgres
     password: postgres
+
+gateway:
+  host:
+    pdf-services: https://pdf-services-development.herokuapp.com

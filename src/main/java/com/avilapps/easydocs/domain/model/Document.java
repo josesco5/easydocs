@@ -5,6 +5,7 @@ public class Document {
     private String subject;
     private String path;
     private int folio;
+    private Attachment attachment;
 
     public int getId() {
         return id;
@@ -36,5 +37,13 @@ public class Document {
 
     public void setFolio(int folio) {
         this.folio = folio;
+    }
+
+    public Attachment getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(Attachment attachment) {
+        this.attachment = attachment;
     }
 }

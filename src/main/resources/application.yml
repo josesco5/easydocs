@@ -1,3 +1,8 @@
 spring:
   profiles:
     active: dev
+
+application:
+  connector:
+    path:
+      upload-attachment: ${gateway.host.pdf-services}/documents/upload

@@ -27,7 +27,7 @@ public class DocumentCreateService implements DocumentService {
     public String createDocument(Document document, MultipartFile file) {
         try {
             Document createdDocument = documentRepository.createDocument(document);
-            URL url = attachmentRepository.uploadAttachment(createdDocument, file);
+            URL url = attachmentRepository.uploadAttachment(createdDocument, document.getAttachment());
             String path = url.getPath();
             document.setPath(path);
             documentRepository.updateDocument(document);

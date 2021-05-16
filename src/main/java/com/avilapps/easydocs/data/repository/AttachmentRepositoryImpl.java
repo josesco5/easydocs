@@ -1,6 +1,9 @@
 package com.avilapps.easydocs.data.repository;
 
 import com.avilapps.easydocs.data.gateway.AttachmentGateway;
+import com.avilapps.easydocs.data.model.AttachmentUploadRequest;
+import com.avilapps.easydocs.data.model.AttachmentUploadResponse;
+import com.avilapps.easydocs.domain.model.Attachment;
 import com.avilapps.easydocs.domain.model.Document;
 import com.avilapps.easydocs.domain.repository.AttachmentRepository;
 import org.slf4j.Logger;
@@ -21,13 +24,19 @@ public class AttachmentRepositoryImpl implements AttachmentRepository {
     }
 
     @Override
-    public URL uploadAttachment(Document document, MultipartFile file) {
+    public URL uploadAttachment(Document document, Attachment attachment) {
         try {
-            String url = attachmentGateway.uploadAttachment(document, file);
-            return new URL(url);
+            AttachmentUploadRequest attachmentUploadRequest = new AttachmentUploadRequest();
+            attachmentUploadRequest.setFilename(attachment.getFilename());
+            attachmentUploadRequest.setContent(attachment.getContent());
+            String destinationPath = String.format("uploads/attachment/content/%s/%s", document.getId(), attachment.getFilename());
+            attachmentUploadRequest.setPath(destinationPath);
+            AttachmentUploadResponse attachmentUploadResponse = attachmentGateway.uploadAttachment(attachmentUploadRequest);
+            return new URL(attachmentUploadResponse.getUrl());
         } catch (Exception exception) {
             LOG.error(exception.getMessage(), exception);
         }
+
         return null;
     }
 }
