@@ -1,5 +1,6 @@
 package com.avilapps.easydocs.data.gateway.impl;
 
+import com.avilapps.easydocs.common.exceptions.GatewayException;
 import com.avilapps.easydocs.data.gateway.AttachmentGateway;
 import com.avilapps.easydocs.data.model.AttachmentUploadRequest;
 import com.avilapps.easydocs.data.model.AttachmentUploadResponse;
@@ -57,7 +58,7 @@ public class AttachmentUploadGatewayImpl implements AttachmentGateway {
 
         } catch (Exception exception) {
             LOG.error(exception.getMessage(), exception);
+            throw new GatewayException(exception.getMessage(), exception);
         }
-        return null;
     }
 }

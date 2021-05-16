@@ -1,10 +1,9 @@
 package com.avilapps.easydocs.data.repository;
 
+import com.avilapps.easydocs.common.exceptions.RepositoryException;
 import com.avilapps.easydocs.data.entity.DocumentEntity;
 import com.avilapps.easydocs.data.gateway.DocumentGateway;
 import com.avilapps.easydocs.data.mapper.DocumentDataMapper;
-import com.avilapps.easydocs.data.repository.impl.DocumentCreateRepository;
-import com.avilapps.easydocs.data.repository.impl.DocumentUpdateRepository;
 import com.avilapps.easydocs.domain.model.Document;
 import com.avilapps.easydocs.domain.repository.DocumentRepository;
 import org.slf4j.Logger;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class DocumentRepositoryImpl implements DocumentRepository {
-    private static final Logger LOG = LoggerFactory.getLogger(DocumentCreateRepository.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DocumentRepositoryImpl.class);
 
     private final DocumentGateway documentGateway;
     private final DocumentDataMapper documentDataMapper;
@@ -34,8 +33,8 @@ public class DocumentRepositoryImpl implements DocumentRepository {
         }
         catch (Exception exception) {
             LOG.error(exception.getMessage(), exception);
+            throw  new RepositoryException(exception.getMessage(), exception);
         }
-        return null;
     }
 
     @Override
@@ -48,8 +47,8 @@ public class DocumentRepositoryImpl implements DocumentRepository {
         }
         catch (Exception exception) {
             LOG.error(exception.getMessage(), exception);
+            throw  new RepositoryException(exception.getMessage(), exception);
         }
-        return null;
     }
 
 }

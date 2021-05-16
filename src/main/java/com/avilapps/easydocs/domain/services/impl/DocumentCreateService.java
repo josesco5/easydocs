@@ -1,5 +1,8 @@
 package com.avilapps.easydocs.domain.services.impl;
 
+import com.avilapps.easydocs.common.exceptions.GatewayException;
+import com.avilapps.easydocs.common.exceptions.RepositoryException;
+import com.avilapps.easydocs.common.exceptions.ServiceException;
 import com.avilapps.easydocs.domain.repository.AttachmentRepository;
 import com.avilapps.easydocs.domain.repository.DocumentRepository;
 import com.avilapps.easydocs.domain.model.Document;
@@ -34,9 +37,12 @@ public class DocumentCreateService implements DocumentService {
 
             return url.toString();
         }
+        catch (RepositoryException | GatewayException exception) {
+            throw exception;
+        }
         catch (Exception exception) {
             LOG.error(exception.getMessage(), exception);
+            throw new ServiceException(exception.getMessage(), exception);
         }
-        return "";
     }
 }

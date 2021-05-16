@@ -1,5 +1,9 @@
 package com.avilapps.easydocs.presentation.delegate.impl;
 
+import com.avilapps.easydocs.common.exceptions.DelegateException;
+import com.avilapps.easydocs.common.exceptions.GatewayException;
+import com.avilapps.easydocs.common.exceptions.RepositoryException;
+import com.avilapps.easydocs.common.exceptions.ServiceException;
 import com.avilapps.easydocs.domain.model.Document;
 import com.avilapps.easydocs.domain.services.DocumentService;
 import com.avilapps.easydocs.presentation.mapper.DocumentCreateApiMapper;
@@ -29,8 +33,11 @@ public class DocumentCreateDelegate {
             Document document = documentCreateApiMapper.mapApiRequest(documentRequest);
             String url = documentService.createDocument(document, documentRequest.getFile());
             documentResponse.setUrl(url);
+        } catch (ServiceException | RepositoryException | GatewayException exception) {
+            throw exception;
         } catch (Exception exception) {
             LOG.error(exception.getMessage(), exception);
+            throw new DelegateException(exception.getMessage(), exception);
         }
         return new ResponseEntity<>(documentResponse, HttpStatus.CREATED);
     }
