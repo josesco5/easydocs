@@ -3,6 +3,7 @@ package com.avilapps.easydocs.data.repository;
 import com.avilapps.easydocs.common.exceptions.GatewayException;
 import com.avilapps.easydocs.common.exceptions.RepositoryException;
 import com.avilapps.easydocs.data.gateway.AttachmentGateway;
+import com.avilapps.easydocs.data.mapper.AttachmentUploadDataMapper;
 import com.avilapps.easydocs.data.model.AttachmentUploadRequest;
 import com.avilapps.easydocs.data.model.AttachmentUploadResponse;
 import com.avilapps.easydocs.domain.model.Attachment;
@@ -19,19 +20,17 @@ public class AttachmentRepositoryImpl implements AttachmentRepository {
     private static final Logger LOG = LoggerFactory.getLogger(AttachmentRepositoryImpl.class);
 
     private final AttachmentGateway attachmentGateway;
+    private final AttachmentUploadDataMapper attachmentUploadDataMapper;
 
-    public AttachmentRepositoryImpl(AttachmentGateway attachmentGateway) {
+    public AttachmentRepositoryImpl(AttachmentGateway attachmentGateway, AttachmentUploadDataMapper attachmentUploadDataMapper) {
         this.attachmentGateway = attachmentGateway;
+        this.attachmentUploadDataMapper = attachmentUploadDataMapper;
     }
 
     @Override
     public URL uploadAttachment(Document document, Attachment attachment) {
         try {
-            AttachmentUploadRequest attachmentUploadRequest = new AttachmentUploadRequest();
-            attachmentUploadRequest.setFilename(attachment.getFilename());
-            attachmentUploadRequest.setContent(attachment.getContent());
-            String destinationPath = String.format("uploads/attachment/content/%s/%s", document.getId(), attachment.getFilename());
-            attachmentUploadRequest.setPath(destinationPath);
+            AttachmentUploadRequest attachmentUploadRequest = attachmentUploadDataMapper.mapDataSourceRequest(document, attachment);
             AttachmentUploadResponse attachmentUploadResponse = attachmentGateway.uploadAttachment(attachmentUploadRequest);
             return new URL(attachmentUploadResponse.getUrl());
         } catch (GatewayException exception) {
