@@ -1,12 +1,7 @@
 {
   "name": "EasyDocs",
   "addons": [
-    {
-      "plan": "heroku-postgresql",
-      "options": {
-        "version": "9.5"
-      }
-    }
+    "heroku-postgresql:hobby-dev"
   ],
   "buildpacks": [
     {
