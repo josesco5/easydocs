@@ -1,0 +1,11 @@
+{
+  "name": "EasyDocs",
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/gradle"
+    }
+  ]
+}
