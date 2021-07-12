@@ -87,4 +87,29 @@ public class CreateDocumentIntegrationTest {
 
         mockServer.verify();
     }
+
+    @Test
+    void shouldManageExceptionWhenCreatingANewDocument() throws Exception {
+        mockServer.expect(ExpectedCount.once(), requestTo(new URI("https://pdf-services-development.herokuapp.com/documents/upload")))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR));
+
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "brief.pdf",
+                MediaType.APPLICATION_PDF_VALUE,
+                "content".getBytes()
+        );
+
+        Mockito.when(documentGateway.save(any(DocumentEntity.class)))
+                .thenReturn(savedDocumentEntity);
+
+        mockMvc.perform(multipart("/documents")
+                .file(file)
+                .param("subject", "Test document")
+                .param("folio", "2"))
+                .andExpect(status().is5xxServerError());
+
+        mockServer.verify();
+    }
 }
