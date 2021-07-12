@@ -60,3 +60,6 @@ jacocoTestCoverageVerification {
 }
 
 check.dependsOn jacocoTestCoverageVerification
+
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
