@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    active: dev
+  jpa:
+    hibernate:
+      ddl-auto: none
+  datasource:
+    initialization-mode: always
+
+management:
+  endpoints:
+    web:
+      base-path: /
+
+application:
+  connector:
+    path:
+      upload-attachment: ${gateway.host.pdf-services}/documents/upload
