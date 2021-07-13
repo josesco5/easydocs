@@ -32,8 +32,8 @@ public class DocumentCreateService implements DocumentService {
             Document createdDocument = documentRepository.createDocument(document);
             URL url = attachmentRepository.uploadAttachment(createdDocument, document.getAttachment());
             String path = url.getPath();
-            document.setPath(path);
-            documentRepository.updateDocument(document);
+            createdDocument.setPath(path);
+            documentRepository.updateDocument(createdDocument);
 
             return url.toString();
         }
